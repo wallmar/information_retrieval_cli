@@ -46,15 +46,19 @@ export default class Solr {
             document.languages = this.getValues(js.languages?.language);
             document.soundmixes = this.getValues(js.soundmixes?.soundmix);
             document.countries = this.getValues(js.countries?.country);
-            document.runningtime = this.getRunningtime(js.runningtimes?.runningtime);
+            document.runningtime_t = this.getRunningtime(js.runningtimes?.runningtime)[0];
             document.directors = this.getValues(js.directors?.director);
             document.producers = this.getValues(js.producers?.producer);
             document.cast = this.getCast(js.cast?.credit);
             document.plot_t = this.getValues(js.plot)[0];
 
-            await this.addDocument(id, document);
+            try {
+                await this.addDocument(id, document);
+            }
+            catch {
+                console.log(`Oops, there was a problem with document ${id}`)
+            }
         }
-
         await this.commit();
     }
 
