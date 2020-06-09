@@ -1,26 +1,37 @@
-import Solr, { TITLE_FIELD } from "./solr";
+#!/usr/bin/env babel-node
+import Solr from "./solr";
+import glob from "glob";
 
-const readline = require("readline");
+const [, , ...args] = process.argv;
 
 const solr = new Solr();
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: "Enter query, empty to quit: ",
-});
+switch (args[0]) {
+    case "import":
+        importData();
+        break;
+    case "delete-all":
+        deleteAll();
+        break;
+    default:
+        console.log("Unknown command");
+}
 
-rl.prompt();
-rl.on("line", async (line) => {
-    if (line === "") {
-        process.exit(0);
+async function importData() {
+    try {
+        console.log("Importing data ...");
+        await solr.import(glob.sync("corpus/*.txt"));
+        console.log("Finished");
+    } catch (e) {
+        console.error(e);
     }
+}
 
-    const results = await solr.search(line.trim());
-    console.log(`Found ${results.numFound} results, showing top 5\n`);
-
-    for (const result of results.docs.slice(0, 5)) {
-        console.log(`${result[TITLE_FIELD]}: ${result.score}`);
+async function deleteAll() {
+    try {
+        console.log("Deleting data ...");
+        await solr.deleteAll();
+        console.log("Finished");
+    } catch (e) {
+        console.error(e);
     }
-
-    rl.prompt();
-});
+}

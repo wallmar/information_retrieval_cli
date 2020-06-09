@@ -7,7 +7,8 @@
         "test": "jest",
         "lint": "prettier --check **/*.{js,json}",
         "lint-fix": "prettier --write **/*.{js,json}",
-        "cli": "babel-node cli.js"
+        "import": "babel-node cli.js import",
+        "delete-all": "babel-node cli.js delete-all"
     },
     "repository": {
         "type": "git",

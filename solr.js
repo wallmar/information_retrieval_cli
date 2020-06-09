@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-import { doc } from "prettier";
 const fs = require("fs");
 
 export const TITLE_FIELD = "title_t";
@@ -10,11 +9,7 @@ export default class Solr {
         this.solrUrl = solrUrl;
     }
 
-    async import(filenames, deleteAll = false) {
-        if (deleteAll) {
-            await this.deleteAll();
-        }
-
+    async import(filenames) {
         for (const filename of filenames) {
             const id = filename;
             let title = filename.replace(/_/g, " ").split(".")[0];
