@@ -25,6 +25,7 @@
         "@babel/preset-env": "^7.9.5",
         "@babel/register": "^7.9.0",
         "jest": "^25.3.0",
-        "prettier": "^2.0.4"
+        "prettier": "^2.0.4",
+        "xml-js": "^1.6.11"
     }
 }

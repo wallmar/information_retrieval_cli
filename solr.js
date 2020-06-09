@@ -1,34 +1,61 @@
 import fetch from "node-fetch";
 const fs = require("fs");
-
-export const TITLE_FIELD = "title_t";
-export const TEXT_FIELD = "text_t";
+const convert = require('xml-js');
 
 export default class Solr {
-    constructor(solrUrl = "http://localhost:8983/solr/simplewiki") {
+    constructor(solrUrl = "http://localhost:8983/solr/movie-club") {
         this.solrUrl = solrUrl;
+    }
+
+    getValues(field) {
+        if (field === undefined)
+            return [];
+        if (Array.isArray(field))
+            return field.map(obj => Object.values(obj)).flat();
+        return [field.value]
+    }
+
+    getCast(field) {
+        if (field === undefined)
+            return [];
+        if (Array.isArray(field))
+            return field.map(obj => obj.actor?.value).flat();
+        return [field.actor.value]
+    }
+
+    getRunningtime(field) {
+        if (field === undefined)
+            return [];
+        if (Array.isArray(field))
+            return field.map(obj => obj.value).flat();
+        return [field.value]
     }
 
     async import(filenames) {
         for (const filename of filenames) {
-            const id = filename;
-            let title = filename.replace(/_/g, " ").split(".")[0];
-            while (title.indexOf("/") !== -1) {
-                title = title.split("/")[1];
-            }
-            const text = fs.readFileSync(filename, "utf-8");
+            const xml = fs.readFileSync(filename, "utf-8");
+            const js = convert.xml2js(xml, {compact: true, spaces: 4, textKey: "value"}).doc;
+            const document = {};
+            const id = js._attributes?.id;
+            document.title_t = js.title?.value;
+            document.year_i = js.year?.value;
+            document.type_t = js.type?.value;
+            document.colorinfos = this.getValues(js.colorinfos?.colorinfo);
+            document.genres = this.getValues(js.genres?.genre);
+            document.keywords = this.getValues(js.keywords?.keyword);
+            document.languages = this.getValues(js.languages?.language);
+            document.soundmixes = this.getValues(js.soundmixes?.soundmix);
+            document.countries = this.getValues(js.countries?.country);
+            document.runningtime = this.getRunningtime(js.runningtimes?.runningtime);
+            document.directors = this.getValues(js.directors?.director);
+            document.producers = this.getValues(js.producers?.producer);
+            document.cast = this.getCast(js.cast?.credit);
+            document.plot_t = this.getValues(js.plot)[0];
 
-            await this.addDocument(id, this.buildDocument(title, text));
+            await this.addDocument(id, document);
         }
 
         await this.commit();
-    }
-
-    buildDocument(title, text) {
-        const document = {};
-        document[TITLE_FIELD] = title;
-        document[TEXT_FIELD] = text;
-        return document;
     }
 
     async commit() {

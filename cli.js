@@ -19,7 +19,7 @@ switch (args[0]) {
 async function importData() {
     try {
         console.log("Importing data ...");
-        await solr.import(glob.sync("corpus/*.txt"));
+        await solr.import(glob.sync("corpus/*.xml"));
         console.log("Finished");
     } catch (e) {
         console.error(e);
