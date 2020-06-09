@@ -4,7 +4,6 @@
     "description": "Boilerplate for importing Simple Wikipedia into Solr",
     "main": "cli.js",
     "scripts": {
-        "test": "jest",
         "lint": "prettier --check **/*.{js,json}",
         "lint-fix": "prettier --write **/*.{js,json}",
         "import": "babel-node cli.js import",

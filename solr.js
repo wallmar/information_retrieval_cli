@@ -47,7 +47,7 @@ export default class Solr {
         });
     }
 
-    async search(query, start = 0, rows = 10) {
+    /*async search(query, start = 0, rows = 10) {
         return await this.postSolrRequest("select", {
             params: {
                 fl: "*,score",
@@ -62,7 +62,7 @@ export default class Solr {
                 },
             },
         });
-    }
+    }*/
 
     async postSolrRequest(url, body) {
         const jsonResponse = await fetch(`${this.solrUrl}/${url}`, {
