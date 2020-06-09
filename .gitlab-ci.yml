@@ -1,0 +1,31 @@
+image: node:latest
+
+default:
+    tags:
+        - "node:latest"
+
+stages:
+    - build
+    - test
+
+cache:
+    paths:
+        - node_modules/
+
+install:
+    stage: build
+    script:
+        - npm install
+    artifacts:
+        paths:
+            - node_modules/
+
+test:
+    stage: test
+    services:
+        -   name: solr:8-slim
+            alias: solr
+            command: ["solr-precreate", "simplewiki"]
+    script:
+        - npm run lint
+        - SOLR_URL=http://solr:8983/solr/simplewiki npm run test

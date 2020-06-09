@@ -1,0 +1,30 @@
+{
+    "name": "homework-3-solr-import",
+    "version": "1.0.0",
+    "description": "Boilerplate for importing Simple Wikipedia into Solr",
+    "main": "cli.js",
+    "scripts": {
+        "test": "jest",
+        "lint": "prettier --check **/*.{js,json}",
+        "lint-fix": "prettier --write **/*.{js,json}",
+        "cli": "babel-node cli.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://gitlab.mediacube.at/information-retrieval/homework-3-solr-import.git"
+    },
+    "author": "Georg M. Sorst <gsorst.lba@fh-salzburg.ac.at>",
+    "license": "ISC",
+    "dependencies": {
+        "glob": "^7.1.6",
+        "node-fetch": "^2.6.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/node": "^7.8.7",
+        "@babel/preset-env": "^7.9.5",
+        "@babel/register": "^7.9.0",
+        "jest": "^25.3.0",
+        "prettier": "^2.0.4"
+    }
+}
