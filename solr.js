@@ -37,9 +37,9 @@ export default class Solr {
             const js = convert.xml2js(xml, {compact: true, spaces: 4, textKey: "value"}).doc;
             const document = {};
             const id = js._attributes?.id;
-            document.title_t = js.title?.value;
+            document.title_txt_en = js.title?.value;
             document.year_i = js.year?.value;
-            document.type_t = js.type?.value;
+            document.type_txt_en = js.type?.value;
             document.colorinfos = this.getValues(js.colorinfos?.colorinfo);
             document.genres = this.getValues(js.genres?.genre);
             document.keywords = this.getValues(js.keywords?.keyword);
@@ -50,7 +50,7 @@ export default class Solr {
             document.directors = this.getValues(js.directors?.director);
             document.producers = this.getValues(js.producers?.producer);
             document.cast = this.getCast(js.cast?.credit);
-            document.plot_t = this.getValues(js.plot)[0];
+            document.plot_txt_en = this.getValues(js.plot)[0];
 
             try {
                 await this.addDocument(id, document);
