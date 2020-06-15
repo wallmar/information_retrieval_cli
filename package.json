@@ -1,7 +1,7 @@
 {
-    "name": "homework-3-solr-import",
+    "name": "cli-movie-club",
     "version": "1.0.0",
-    "description": "Boilerplate for importing Simple Wikipedia into Solr",
+    "description": "CLI for movie-club",
     "main": "cli.js",
     "scripts": {
         "lint": "prettier --check **/*.{js,json}",
@@ -11,9 +11,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://gitlab.mediacube.at/information-retrieval/homework-3-solr-import.git"
+        "url": "https://github.com/wallmar/information_retrieval_cli"
     },
-    "author": "Georg M. Sorst <gsorst.lba@fh-salzburg.ac.at>",
+    "author": "Georg M. Sorst <gsorst.lba@fh-salzburg.ac.at>, Lena Heiglauer, Simon Seebacher, Markus Wallner",
     "license": "ISC",
     "dependencies": {
         "glob": "^7.1.6",
