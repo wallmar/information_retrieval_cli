@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 const fs = require("fs");
-const convert = require('xml-js');
+const convert = require("xml-js");
 
 export default class Solr {
     constructor(solrUrl = "http://localhost:8983/solr/movie-club") {
@@ -8,33 +8,27 @@ export default class Solr {
     }
 
     getValues(field) {
-        if (field === undefined)
-            return [];
-        if (Array.isArray(field))
-            return field.map(obj => Object.values(obj)).flat();
-        return [field.value]
+        if (field === undefined) return [];
+        if (Array.isArray(field)) return field.map((obj) => Object.values(obj)).flat();
+        return [field.value];
     }
 
     getCast(field) {
-        if (field === undefined)
-            return [];
-        if (Array.isArray(field))
-            return field.map(obj => obj.actor?.value).flat();
-        return [field.actor.value]
+        if (field === undefined) return [];
+        if (Array.isArray(field)) return field.map((obj) => obj.actor?.value).flat();
+        return [field.actor.value];
     }
 
     getRunningtime(field) {
-        if (field === undefined)
-            return [];
-        if (Array.isArray(field))
-            return field.map(obj => obj.value).flat();
-        return [field.value]
+        if (field === undefined) return [];
+        if (Array.isArray(field)) return field.map((obj) => obj.value).flat();
+        return [field.value];
     }
 
     async import(filenames) {
         for (const filename of filenames) {
             const xml = fs.readFileSync(filename, "utf-8");
-            const js = convert.xml2js(xml, {compact: true, spaces: 4, textKey: "value"}).doc;
+            const js = convert.xml2js(xml, { compact: true, spaces: 4, textKey: "value" }).doc;
             const document = {};
             const id = js._attributes?.id;
             document.title_txt_en = js.title?.value;
@@ -54,9 +48,8 @@ export default class Solr {
 
             try {
                 await this.addDocument(id, document);
-            }
-            catch {
-                console.log(`Oops, there was a problem with document ${id}`)
+            } catch {
+                console.log(`Oops, there was a problem with document ${id}`);
             }
         }
         await this.commit();
